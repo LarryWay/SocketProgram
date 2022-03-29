@@ -55,11 +55,14 @@ int main(){
         exit(EXIT_FAILURE);
     }
 
+
     while(true){
         std::getline(std::cin , line);
+        std::cout << line << std::endl;
         char sendMessage[line.length() + 1];
         strcpy(sendMessage, line.c_str());
         send(new_socket, sendMessage, strlen(sendMessage),0);
+        std::cin.sync();
     }
 
     return 0;

@@ -2,6 +2,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <cstring>
 
 
 #define PORT 8080
@@ -10,6 +11,8 @@ int main(){
     int sock, valread;
     struct sockaddr_in server_addr;
     char buffer[1024] = {0};
+
+    char* buff = new char[100];
 
     if((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0){
         printf("\n Socket creation error \n");
@@ -30,9 +33,9 @@ int main(){
         return -1;
     }
 
-    while(read(sock,buffer,1024)){
-        //valread = read(sock, buffer, 1024);
+    while(read(sock, buffer, 1024)){
         std::cout << buffer << std::endl;
+        memset(&buffer, 0, sizeof(buffer));
     }
 
 
