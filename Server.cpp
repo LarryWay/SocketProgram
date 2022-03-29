@@ -9,7 +9,7 @@
 #include <string.h>
 #include <string>
 
-#define PORT 8080
+#define PORT 8079
 
 
 int main(){
@@ -20,6 +20,9 @@ int main(){
     std::string line;
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
+    char buffer[1024] = {0};
+
+    std::cout << "Awaiting Connection" << std::endl;
 
     if(sockfd == 0){
         perror("socket failed");
@@ -43,7 +46,7 @@ int main(){
         exit(EXIT_FAILURE);
     }
 
-    std::cout << "Start" << std::endl;
+    
 
     if(listen(sockfd, 3) < 0){
         perror("listen");
@@ -55,14 +58,22 @@ int main(){
         exit(EXIT_FAILURE);
     }
 
+    std::cout << "Start" << std::endl;
 
     while(true){
-        std::getline(std::cin , line);
-        std::cout << line << std::endl;
+        memset(&buffer, 0, sizeof(buffer));
+        
+        std::getline(std::cin, line);
         char sendMessage[line.length() + 1];
         strcpy(sendMessage, line.c_str());
-        send(new_socket, sendMessage, strlen(sendMessage),0);
         std::cin.sync();
+
+        send(new_socket, sendMessage, strlen(sendMessage),0);
+        read(new_socket, buffer, 1024);
+        std::cout << buffer << std::endl;
+        
+        
+        
     }
 
     return 0;

@@ -3,14 +3,17 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <cstring>
+#include <string>
+#include <string.h>
 
 
-#define PORT 8080
+#define PORT 8079
 
 int main(){
     int sock, valread;
     struct sockaddr_in server_addr;
     char buffer[1024] = {0};
+    std::string line;
 
     char* buff = new char[100];
 
@@ -23,7 +26,7 @@ int main(){
     server_addr.sin_port = htons(PORT);
 
     // THE STRING IS THE IP ADDRESS OF THE SERVER TO BE CONNECTED TO
-    if(inet_pton(AF_INET, "10.30.3.207", &server_addr.sin_addr) <= 0){
+    if(inet_pton(AF_INET, "127.0.0.1", &server_addr.sin_addr) <= 0){
         printf("\nInvalid address/ Address not supported \n");
         return -1;
     }
@@ -33,9 +36,25 @@ int main(){
         return -1;
     }
 
-    while(read(sock, buffer, 1024)){
-        std::cout << buffer << std::endl;
+    std::cout << "Running" << std::endl;
+
+    while(true){
         memset(&buffer, 0, sizeof(buffer));
+        
+
+        std::getline(std::cin, line);
+        char sendMessage[line.length() + 1];
+        strcpy(sendMessage, line.c_str());
+        
+
+        std::cin.sync();
+        read(sock, buffer, 1024);
+        std::cout << buffer << std::endl;
+        
+
+        send(sock, sendMessage, strlen(sendMessage),0);
+
+
     }
 
 
