@@ -22,8 +22,8 @@ int main(){
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(PORT);
 
-
-    if(inet_pton(AF_INET, "127.0.0.1", &server_addr.sin_addr) <= 0){
+    // THE STRING IS THE IP ADDRESS OF THE SERVER TO BE CONNECTED TO
+    if(inet_pton(AF_INET, "10.30.3.207", &server_addr.sin_addr) <= 0){
         printf("\nInvalid address/ Address not supported \n");
         return -1;
     }
